@@ -12,20 +12,22 @@ function PaymentRow(props) {
     return (
         <tr>
             <th scope="row"><Button variant="secondary" onClick={onIdClick} disabled={(props.onIdClick === undefined)}>{props.id}</Button></th>
-            <th>{props.payment_id || "-"}</th>
-            <th>{new Intl.DateTimeFormat("en-GB", {
+            <td>{props.payment_id || "-"}</td>
+            <td>{new Intl.DateTimeFormat("en-GB", {
                     year: "numeric", month: "numeric", day: "2-digit",
                     hour: 'numeric', minute: 'numeric', second: 'numeric',
                 })
-                .format(Date.parse(props.payment_date))}</th>
-            <th>{props.payment_type}</th>
-            <th>{props.value || "-"}</th>
-            <th>{props.currency || "-"}</th>
-            <th>{props.user}</th>
-            <th>{props.main_info}</th>
-            <th>{props.other_info || "-"}</th>
-            <th>{props.status || "-"}</th>
-            <th>{props.activated ? <FontAwesomeIcon icon={faCheck} /> : <FontAwesomeIcon icon={faTimes} />}</th>
+                .format(Date.parse(props.payment_date))}</td>
+            <td>{props.payment_type}</td>
+            <td>{props.value || "-"}</td>
+            <td>{props.currency || "-"}</td>
+            <td>{props.user}</td>
+            <td>{props.server || "?"}</td>
+            <td>{props.product || "?"}</td>
+            <td>{props.main_info}</td>
+            <td>{props.other_info || "-"}</td>
+            <td>{props.status || "-"}</td>
+            <td>{props.activated ? <FontAwesomeIcon icon={faCheck} /> : <FontAwesomeIcon icon={faTimes} />}</td>
         </tr>
     )
 }
