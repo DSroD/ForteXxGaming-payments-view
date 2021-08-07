@@ -4,11 +4,13 @@ import Table from 'react-bootstrap/Table';
 import ServerTableHead from '../components/server/ServerTableHead';
 import ServerRow from '../components/server/ServerRow';
 
+import ServerApi from '../api/ServerApi';
+
 function ServerView(props) {
     const [servers, setServers] = useState([]);
 
     useEffect(() => {
-        requestServers(props.api_key)
+        ServerApi.requestServers(props.api_key)
         .then((r) => {
                 if(r === null) {
                     props.throwForbidden();
@@ -22,25 +24,8 @@ function ServerView(props) {
         }
     }, [props])
 
-    const requestServers = (akey) => {
-        return fetch(props.api_url + "Servers/" + akey + "/list")
-            .then(res => res.json())
-            .then(
-            (result) => {
-                let rt = null;
-                if(result.status !== 403) {
-                    rt = result;
-                }
-                return rt;
-            },
-            (error) => {
-                // Nothing yet...
-            }
-        );
-    }
-
     const handleIdClick = (id) => {
-
+        props.handleIdClick(id);
     }
 
     const mapServers = () => {

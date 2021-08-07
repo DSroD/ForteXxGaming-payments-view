@@ -10,7 +10,9 @@ import PaymentRow from "../components/PaymentRow";
 import UserSearchComponent from '../components/UserSearchComponent';
 import PaymentTableHead from "../components/PaymentTableHead";
 
-function SingleUserViewComponent(props) {
+import ServerApi from "../api/ServerApi";
+
+function SinglePaymentViewComponent(props) {
 
     const [payment, setPayment] = useState(null);
     const [status, setStatus] = useState("");
@@ -18,7 +20,7 @@ function SingleUserViewComponent(props) {
     const [user, setUser] = useState("");
     
     useEffect(() => {
-        requestUserById(props.api_key, props.id)
+        ServerApi.requestUserById(props.api_key, props.id)
         .then((r) => {
                 if(r === null) {
                     props.throwForbidden();
@@ -35,23 +37,6 @@ function SingleUserViewComponent(props) {
         }
     }, [props])
 
-    const requestUserById = (akey, id) => {
-        return fetch(props.api_url + "Payments/" + akey + "/id/" + id )
-            .then(res => res.json())
-            .then(
-            (result) => {
-                let rt = null;
-                if(result.status !== 403) {
-                    rt = result;
-                }
-                return rt;
-            },
-            (error) => {
-                // Nothing yet...
-            }
-        );
-    }
-
     const getPaymentRow = () => {
         if (payment === null || payment === undefined) {
             return null;
@@ -64,6 +49,10 @@ function SingleUserViewComponent(props) {
         value={payment.value} 
         currency={payment.currency}
         user={payment.user}
+        server={payment.serverName}
+        serverId={payment.serverId}
+        product={payment.productName}
+        productId={payment.productId}
         main_info={payment.mainInfo}
         other_info={payment.otherInfo}
         status={payment.status}
@@ -124,4 +113,4 @@ function SingleUserViewComponent(props) {
     );
 }
 
-export default SingleUserViewComponent;
+export default SinglePaymentViewComponent;

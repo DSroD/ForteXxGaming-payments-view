@@ -3,17 +3,18 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import PaymentsViewComponent from './views/PaymentsViewComponent';
-import LimitedPaymentsViewComponent from './views/PaymentsViewByNameComponent';
-import SingleUserViewComponent from './views/SingleUserViewComponent';
+import PaymentsViewByNameComponent from './views/PaymentsViewByNameComponent';
+import SinglePaymentViewComponent from './views/SinglePaymentViewComponent';
 import ServersView from './views/ServersView';
 import PasswordPopup from './components/PasswordPopup';
 import ForbiddenPopup from './components/ForbiddenPopup';
+import SingleServerView from './views/SingleServerView';
 
 
 function App() {
   const [api_key, setKey] = useState("");
   const [view, setView] = useState(-1);
-  const [pervView, setPervView] = useState(0);
+  const [pervView, setPervView] = useState([0]);
   // 0 - view all records, page; 1 - view user records; 2 - view and edit single record;
   // 3 - BI view; 4 - Server view; 5 - Single server view; 6 - Products view;
   // 7 - single product view
@@ -23,41 +24,41 @@ function App() {
   const [id, setId] = useState(0);
   const [server_id, setServerId] = useState(0);
 
-  const API_URL = "https://localhost:5001/";
-
   const onKeySet = (akey) => {
     setKey(akey);
-    console.log(akey);
-    setView(0); 
+    var pvs = [...pervView];
+    setView(pvs.pop()); 
   }
 
   const handleSearchUserClick = (u) => {
     setUsername(u);
     if(view !== 1) {
-      setPervView(view);
+      setPervView([...pervView, view]);
     }
     setView(1);
   }
 
   const handleUserIDClick = (id) => {
     setId(id);
-    setPervView(view);
+    setPervView([...pervView, view]);
     setView(2);
   }
 
   const handleShowServersClick = () => {
-    setPervView(view);
+    setPervView([...pervView, view]);
     setView(4);
   }
 
   const handleServerIDClick = (id) => {
     setServerId(id);
-    setPervView(view);
+    setPervView([...pervView, view]);
     setView(5);
   }
 
   const closeForbidden = () => {
     setForbiddenShow(false);
+    setPervView([...pervView, view]);
+    setView(-1);
   }
 
   const showForbidden = () => {
@@ -65,8 +66,10 @@ function App() {
   }
 
   const handleBackClick = () => {
-    setPervView(view);
-    setView(pervView);
+    var pvs = [...pervView];
+    var nv = pvs.pop()
+    setPervView(pvs);
+    setView(nv);
   }
 
   const view0 = () => {
@@ -76,34 +79,31 @@ function App() {
         throwForbidden={showForbidden}
         handleSearchUserClick={handleSearchUserClick}
         handleIdClick={handleUserIDClick}
-        handleShowServers={handleShowServersClick}
-        api_url={API_URL}/>
+        handleShowServers={handleShowServersClick}/>
     );
   }
 
   const view1 = () => {
     return (
-      <LimitedPaymentsViewComponent
+      <PaymentsViewByNameComponent
       api_key={api_key}
       username={username}
       throwForbidden={showForbidden}
       handleSearchUserClick={handleSearchUserClick}
       handleIdClick={handleUserIDClick}
-      handleBack={handleBackClick}
-      api_url={API_URL}/>
+      handleBack={handleBackClick}/>
     );
   }
 
   const view2 = () => {
     return (
-      <SingleUserViewComponent
+      <SinglePaymentViewComponent
         api_key={api_key}
         id={id}
         throwForbidden={showForbidden}
         handleSearchUserClick={handleSearchUserClick}
         handleIdClick={handleUserIDClick}
-        handleBack={handleBackClick}
-        api_url={API_URL}/>
+        handleBack={handleBackClick}/>
     );
   }
 
@@ -115,7 +115,17 @@ function App() {
     return (
       <ServersView
       api_key={api_key}
-      api_url={API_URL}
+      throwForbidden={showForbidden}
+      handleBack={handleBackClick}
+      handleIdClick={handleServerIDClick}/>
+    )
+  }
+
+  const view5 = () => {
+    return (
+      <SingleServerView
+      api_key={api_key}
+      id={server_id}
       throwForbidden={showForbidden}
       handleBack={handleBackClick}/>
     )
@@ -131,6 +141,8 @@ function App() {
         return view2();
       case 4:
         return view4();
+      case 5:
+        return view5();
       default:
         return <PasswordPopup setKey={onKeySet}/>;
 
