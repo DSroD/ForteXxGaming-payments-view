@@ -43,6 +43,10 @@
   margin: 10px;
 }
 
+.form-label {
+  color: rgb(255, 255, 255);
+}
+
 .user-search {
   right: 10px;
   position: absolute;
@@ -50,7 +54,17 @@
   margin: 10px;
 }
 
+.server-icon {
+  margin-right: 6px;
+  margin-bottom: 4px;
+}
+
 .button-back {
+  display: inline-block;
+  margin: 10px;
+}
+
+.button-create {
   display: inline-block;
   margin: 10px;
 }

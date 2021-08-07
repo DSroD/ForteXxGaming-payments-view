@@ -106,6 +106,52 @@ class ServerApi {
         );
     };
 
+    static createServer(akey, srv) {
+        return fetch(ServerApi.API_URL + "Servers/" + akey + "/create", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(srv)
+        })
+            .then(res => res.json())
+            .then(
+            (result) => {
+                let rt = null;
+                if(result.status !== 403) {
+                    rt = result;
+                }
+                return rt;
+            },
+            (error) => {
+                // Nothing yet...
+            }
+        );
+    }
+
+    static updateServerId(akey, updates) {
+        return fetch(ServerApi.API_URL + "Servers/" + akey + "/update", {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updates)
+        })
+            .then(res => res.json())
+            .then(
+            (result) => {
+                let rt = null;
+                if(result.status !== 403) {
+                    rt = result;
+                }
+                return rt;
+            },
+            (error) => {
+                // Nothing yet...
+            }
+        );
+    };
+
 }
 
 export default ServerApi;
