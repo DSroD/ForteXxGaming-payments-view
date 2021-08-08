@@ -57,17 +57,17 @@ function ServerView(props) {
         if (servers === null || servers === undefined) {
             return null;
         }
-        return servers.map((s) => <ServerRow id={s.id} name={s.name} game={s.game} info={s.information} iconUrl={s.iconURL} onIdClick={handleIdClick}/>)
+        return servers.map((s) => <ServerRow key={s.id} id={s.id} name={s.name} game={s.game} info={s.information} iconUrl={s.iconURL} onIdClick={handleIdClick}/>)
     }
 
     return(
         <>
         <NewServerModal show={nsrwshow} handleCloseSubmit={handleCreateNewSubmit} handleCloseCancel={handleCreateNewCancel}/>
-        <div class="top-menu">
-            <div class="button-back"><Button variant="primary" onClick={props.handleBack}>Back</Button></div>
-            <dic class="button-create"><Button variant="success" onClick={handleCreateNew}>Create New</Button></dic>
+        <div className="top-menu">
+            <div className="button-back"><Button variant="primary" onClick={props.handleBack}>Back</Button></div>
+            <div className="button-create"><Button variant="success" onClick={handleCreateNew}>Create New</Button></div>
         </div>
-        <div class="text-white">
+        <div className="text-white">
                 <h4>Server View</h4>
         </div>
         <Table variant="dark" striped bordered hover responsive="sm">
@@ -76,11 +76,11 @@ function ServerView(props) {
                 {mapServers()}
             </tbody>
         </Table>
-        <div class="footer-menu">
-          <div class="button-back">
+        <div className="footer-menu">
+          <div className="button-back">
             <Button variant="primary" onClick={props.handleBack}>Back</Button>
           </div>
-          <div class="button-create">
+          <div className="button-create">
             <Button variant="success" onClick={handleCreateNew}>Create New</Button>
           </div>
         </div>

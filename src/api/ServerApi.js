@@ -129,7 +129,7 @@ class ServerApi {
         );
     }
 
-    static updateServerId(akey, updates) {
+    static updateServerById(akey, updates) {
         return fetch(ServerApi.API_URL + "Servers/" + akey + "/update", {
             method: 'PUT',
             headers: {
@@ -151,6 +151,23 @@ class ServerApi {
             }
         );
     };
+
+    static deleteServerById(akey, id) {
+        return fetch(ServerApi.API_URL + "Servers/" + akey + "/delete/" + id, {
+            method: 'DELETE',
+        }).then(
+            (result) => {
+                if(result.status !== 204) {
+                    return false;
+                }
+                return true;
+            },
+            (error) => {
+                // Nothing yet...
+            }
+        );
+    }
+
 
 }
 

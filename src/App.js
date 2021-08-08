@@ -28,6 +28,7 @@ function App() {
     setKey(akey);
     var pvs = [...pervView];
     setView(pvs.pop()); 
+    setPervView(pvs);
   }
 
   const handleSearchUserClick = (u) => {
@@ -59,6 +60,7 @@ function App() {
     setForbiddenShow(false);
     setPervView([...pervView, view]);
     setView(-1);
+    console.log(pervView);
   }
 
   const showForbidden = () => {

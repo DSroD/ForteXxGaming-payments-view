@@ -82,10 +82,10 @@ function PaymentsViewComponent(props) {
 
     return(
         <>
-        <div class="top-menu">
+        <div className="top-menu">
             <PaymentPaginator firstPage={setFirstPage} setPage={setPage} current_page={pg} disable_next={getLength(payments) < numPage}/>
             <ItemsPerPageDropdown current={numPage} onClick={setNumOnPage}/>
-            <div class="button-back"><Button variant="primary" onClick={props.handleShowServers}>Servers</Button></div>
+            <div className="button-back"><Button variant="primary" onClick={props.handleShowServers}>Servers</Button></div>
             <UserSearchComponent searchUser={props.handleSearchUserClick}/>
         </div>
         <Table variant="dark" striped bordered hover responsive="sm">
@@ -94,7 +94,7 @@ function PaymentsViewComponent(props) {
                 {getPaymentArray()}
             </tbody>
         </Table>
-        <div class="footer-menu">
+        <div className="footer-menu">
             <PaymentPaginator firstPage={setFirstPage} setPage={setPage} current_page={pg} disable_next={getLength(payments) < numPage}/>
             <ItemsPerPageDropdown current={numPage} onClick={setNumOnPage}/>
         </div>

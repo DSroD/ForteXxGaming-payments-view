@@ -5,7 +5,6 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { icon } from '@fortawesome/fontawesome-svg-core';
 
 function NewServerModal(props) {
 
@@ -81,8 +80,8 @@ function NewServerModal(props) {
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button variant="secondary" onClick={handleCloseSubmit}>
-                Close
+              <Button variant="success" onClick={handleCloseSubmit}>
+                Create
               </Button>
             </Modal.Footer>
           </Modal>

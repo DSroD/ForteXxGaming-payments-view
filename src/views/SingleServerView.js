@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 import ServerTableHead from "../components/server/ServerTableHead";
 import ServerRow from "../components/server/ServerRow";
@@ -11,14 +11,16 @@ import Col from 'react-bootstrap/Col';
 import ServerApi from "../api/ServerApi";
 import ProductTableHead from "../components/products/ProductTableHead";
 import ProductRow from "../components/products/ProductRow";
+import DeleteConfirmationModal from "../components/DeleteConfirmationModal";
 
 function SingleServerView(props) {
     const [server, setServer] = useState(null);
     const [products, setProducts] = useState([]);
-    const [server_name, setServerName] = useState("");
-    const [server_game, setServerGame] = useState("");
-    const [server_icon, setServerIcon] = useState("")
-    const [server_information, setServerInformation] = useState("");
+    const [server_name, setServerName] = useState("-");
+    const [server_game, setServerGame] = useState("-");
+    const [server_icon, setServerIcon] = useState("-")
+    const [server_information, setServerInformation] = useState("-");
+    const [delete_modal_show, setDeleteModalShow] = useState(false);
 
     useEffect(() => {
         ServerApi.requestServerById(props.api_key, props.id)
@@ -91,7 +93,7 @@ function SingleServerView(props) {
     }
 
     const handleSubmit = (event) => {
-        ServerApi.updateServerId(props.api_key, {
+        ServerApi.updateServerById(props.api_key, {
             id: server.id,
             name: server_name,
             game: server_game,
@@ -112,10 +114,36 @@ function SingleServerView(props) {
         });
     }
 
+    const handleDelete = (event) => {
+        setDeleteModalShow(true);
+    }
+
+    const handleCancelDelete = () => {
+        setDeleteModalShow(false);
+    }
+
+    const handleSubmitDelete = () => {
+        ServerApi.deleteServerById(props.api_key, server.id)
+        .then((r) => {
+            if(r === false) {
+                setDeleteModalShow(false);
+                props.throwForbidden();
+            } else {
+                setDeleteModalShow(false);
+                props.handleBack();
+            }
+        });
+    }
+
     return(
         <>
-        <div class="top-menu">
-            <div class="button-back"><Button variant="primary" onClick={props.handleBack}>Back</Button></div>
+        <DeleteConfirmationModal 
+            show={delete_modal_show}
+            handleClose={handleCancelDelete}
+            text="Do you really want to delete thi server record? It will result in REMOVAL of ALL products and payment records tied to it. THIS CAN NOT BE UNDONE!"
+            handleSubmit={handleSubmitDelete}/>
+        <div className="top-menu">
+            <div className="button-back"><Button variant="primary" onClick={props.handleBack}>Back</Button></div>
         </div>
         <Table variant="dark" striped bordered hover responsive="sm">
             <ServerTableHead/>
@@ -149,12 +177,13 @@ function SingleServerView(props) {
             </Row>
             <Row>
             <Form.Group as={Col} controlId="formSubmit" className="mb-4 mt-3">
-                    <Button variant="primary" onClick={handleSubmit}>Update</Button>
+                    <div className="button-in-row"><Button variant="primary" onClick={handleSubmit}>Update</Button></div>
+                    <div className="button-in-row"><Button variant="danger" onClick={handleDelete}>Delete</Button></div>
                 </Form.Group>
             </Row>
         </Form>
 
-        <div class="text-white">
+        <div className="text-white">
                 <h4>Products</h4>
         </div>
 
@@ -165,8 +194,8 @@ function SingleServerView(props) {
             </tbody>
         </Table>
 
-        <div class="footer-menu">
-          <div class="button-back">
+        <div className="footer-menu">
+          <div className="button-back">
             <Button variant="primary" onClick={props.handleBack}>Back</Button>
           </div>
         </div>

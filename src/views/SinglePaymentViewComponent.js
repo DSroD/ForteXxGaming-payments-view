@@ -74,8 +74,8 @@ function SinglePaymentViewComponent(props) {
 
     return (
         <>
-        <div class="top-menu">
-            <div class="button-back"><Button variant="primary" onClick={props.handleBack}>Back</Button></div>
+        <div className="top-menu">
+            <div className="button-back"><Button variant="primary" onClick={props.handleBack}>Back</Button></div>
             <UserSearchComponent searchUser={props.handleSearchUserClick}/>
         </div>
         <Table variant="dark" striped bordered hover responsive="sm">
@@ -104,8 +104,8 @@ function SinglePaymentViewComponent(props) {
             </Row>
         </Form>
 
-        <div class="footer-menu">
-          <div class="button-back">
+        <div className="footer-menu">
+          <div className="button-back">
             <Button variant="primary" onClick={props.handleBack}>Back</Button>
           </div>
         </div>

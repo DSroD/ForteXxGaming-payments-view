@@ -21,7 +21,7 @@ function UserSearchComponent(props) {
     }
 
     return (
-        <div class="user-search">
+        <div className="user-search">
             <InputGroup className="mb-3">
                 <FormControl
                 placeholder="Username"
