@@ -9,6 +9,7 @@ import ServersView from './views/ServersView';
 import PasswordPopup from './components/PasswordPopup';
 import ForbiddenPopup from './components/ForbiddenPopup';
 import SingleServerView from './views/SingleServerView';
+import SingleProductView from './views/SingleProductView';
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
   const [username, setUsername] = useState("");
   const [id, setId] = useState(0);
   const [server_id, setServerId] = useState(0);
+  const [product_id, setProductId] = useState(0);
 
   const onKeySet = (akey) => {
     setKey(akey);
@@ -56,11 +58,16 @@ function App() {
     setView(5);
   }
 
+  const handleProductIdClick = (id) => {
+    setProductId(id);
+    setPervView([...pervView, view]);
+    setView(6);
+  }
+
   const closeForbidden = () => {
     setForbiddenShow(false);
     setPervView([...pervView, view]);
     setView(-1);
-    console.log(pervView);
   }
 
   const showForbidden = () => {
@@ -129,6 +136,17 @@ function App() {
       api_key={api_key}
       id={server_id}
       throwForbidden={showForbidden}
+      handleBack={handleBackClick}
+      handleProductIdClick={handleProductIdClick}/>
+    )
+  }
+
+  const view6 = () => {
+    return (
+      <SingleProductView
+      api_key={api_key}
+      id={product_id}
+      throwForbidden={showForbidden}
       handleBack={handleBackClick}/>
     )
   }
@@ -145,6 +163,8 @@ function App() {
         return view4();
       case 5:
         return view5();
+      case 6:
+        return view6();
       default:
         return <PasswordPopup setKey={onKeySet}/>;
 

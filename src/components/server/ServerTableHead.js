@@ -4,6 +4,7 @@ function ServerTableHead() {
                 <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Name</th>
+                    <th scope="col">CodeName</th>
                     <th scope="col">Game</th>
                     <th scope="col">Information</th>
                 </tr>

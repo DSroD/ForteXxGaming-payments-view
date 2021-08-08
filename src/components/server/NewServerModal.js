@@ -12,15 +12,16 @@ function NewServerModal(props) {
     const [game, setGame] = useState("");
     const [iconUrl, setIconUrl] = useState("");
     const [information, setInformation] = useState("");
+    const [codename, setCodeName] = useState("");
 
     const handleCloseSubmit = () => {
-        var rt = {
+        props.handleCloseSubmit({
             name: name,
             game: (game === "") ? null : game,
             iconURL: (iconUrl ===  "") ? null : iconUrl,
-            information: (information === "") ? null : information
-        }
-        props.handleCloseSubmit(rt);
+            information: (information === "") ? null : information,
+            codeName: codename
+        });
     }
 
     const handleCloseCancel = () => {
@@ -28,6 +29,7 @@ function NewServerModal(props) {
         setGame("");
         setIconUrl("");
         setInformation("");
+        setCodeName("");
         props.handleCloseCancel();
     }
 
@@ -46,6 +48,10 @@ function NewServerModal(props) {
     const handleServerInformationChange = (event) => {
         setInformation(event.target.value);
     }
+
+    const handleServerCodeNameChange = (event) => {
+        setCodeName(event.target.value);
+    }
     
     return (
         <Modal show={props.show} onHide={handleCloseCancel}>
@@ -56,24 +62,29 @@ function NewServerModal(props) {
                 <Form>
                     <Row className="mt-2">
                         <Form.Group as={Col} controlId="formName">
-                            <Form.Label>Server Name</Form.Label>
+                            <Form.Label className="text-body">Server Name</Form.Label>
                             <Form.Control placeholder="Name" value={name} onChange={handleServerNameChange}/>
                         </Form.Group>
 
                         <Form.Group as={Col} controlId="formGame">
-                            <Form.Label>Server Game</Form.Label>
+                            <Form.Label className="text-body">Server Game</Form.Label>
                             <Form.Control placeholder="Game" value={game} onChange={handleServerGameChange}/>
+                        </Form.Group>
+
+                        <Form.Group as={Col} controlId="formCodename">
+                            <Form.Label className="text-body">CodeName</Form.Label>
+                            <Form.Control placeholder="CodeName" value={codename} onChange={handleServerCodeNameChange}/>
                         </Form.Group>
 
                     </Row>
                     <Row className="mt-2">
                         <Form.Group as={Col} controlId="formUrl">
-                            <Form.Label>Icon URL</Form.Label>
+                            <Form.Label className="text-body">Icon URL</Form.Label>
                             <Form.Control placeholder="Icon URL" value={iconUrl} onChange={handleServerIconChange}/>
                         </Form.Group>
 
                         <Form.Group as={Col} controlId="formInformation">
-                            <Form.Label>Server Info</Form.Label>
+                            <Form.Label className="text-body">Server Info</Form.Label>
                             <Form.Control placeholder="Server Info" value={information} onChange={handleServerInformationChange}/>
                         </Form.Group>
                     </Row>

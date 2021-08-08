@@ -46,7 +46,7 @@ function ServerView(props) {
                 else {
                     setServers([...servers, r]);
                 }
-            })
+            });
     }
 
     const handleCreateNewCancel = () => {
@@ -57,7 +57,7 @@ function ServerView(props) {
         if (servers === null || servers === undefined) {
             return null;
         }
-        return servers.map((s) => <ServerRow key={s.id} id={s.id} name={s.name} game={s.game} info={s.information} iconUrl={s.iconURL} onIdClick={handleIdClick}/>)
+        return servers.map((s) => <ServerRow key={s.id} id={s.id} name={s.name} codeName={s.codeName} game={s.game} info={s.information} iconUrl={s.iconURL} onIdClick={handleIdClick}/>)
     }
 
     return(

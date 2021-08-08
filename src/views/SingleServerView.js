@@ -12,15 +12,20 @@ import ServerApi from "../api/ServerApi";
 import ProductTableHead from "../components/products/ProductTableHead";
 import ProductRow from "../components/products/ProductRow";
 import DeleteConfirmationModal from "../components/DeleteConfirmationModal";
+import { faPlusSquare } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import NewProductModal from "../components/products/NewProductModal";
 
 function SingleServerView(props) {
     const [server, setServer] = useState(null);
     const [products, setProducts] = useState([]);
-    const [server_name, setServerName] = useState("-");
-    const [server_game, setServerGame] = useState("-");
-    const [server_icon, setServerIcon] = useState("-")
-    const [server_information, setServerInformation] = useState("-");
+    const [server_name, setServerName] = useState("");
+    const [server_codeName, setServerCodeName] = useState("");
+    const [server_game, setServerGame] = useState("");
+    const [server_icon, setServerIcon] = useState("")
+    const [server_information, setServerInformation] = useState("");
     const [delete_modal_show, setDeleteModalShow] = useState(false);
+    const [newproduct_modal_show, setNewProductModalShow] = useState(false);
 
     useEffect(() => {
         ServerApi.requestServerById(props.api_key, props.id)
@@ -30,10 +35,11 @@ function SingleServerView(props) {
             }
             else {
                 setServer(r);
-                setServerName(r.name);
-                setServerGame(r.game);
-                setServerIcon(r.iconURL);
-                setServerInformation(r.information);
+                setServerName(r.name || "");
+                setServerCodeName(r.codeName || "");
+                setServerGame(r.game || "");
+                setServerIcon(r.iconURL || "");
+                setServerInformation(r.information || "");
             }
         });
         ServerApi.requestProductsByServerId(props.api_key, props.id)
@@ -53,12 +59,17 @@ function SingleServerView(props) {
         }
         return(
             <ServerRow
-                id={server.id}
+                id={props.id}
                 name={server.name}
+                codeName = {server.codeName}
                 game={server.game}
                 info={server.information}
                 iconUrl={server.iconURL}/>
         )
+    }
+
+    const handleProductIdClick = (id) => {
+        props.handleProductIdClick(id);
     }
 
     const getProductRows = () => {
@@ -68,10 +79,14 @@ function SingleServerView(props) {
         return products.map((p) => {
             return (
                 <ProductRow
+                key={p.name+p.id}
                 id={p.id}
+                name={p.name}
+                codename={p.codeName}
                 information={p.information}
                 priceCzk={p.priceCzk}
-                priceEur={p.priceEur}/>
+                priceEur={p.priceEur}
+                onIdClick={handleProductIdClick}/>
             );
         })
     }
@@ -92,24 +107,29 @@ function SingleServerView(props) {
         setServerInformation(event.target.value);
     }
 
+    const handleServerCodeNameChange = (event) => {
+        setServerCodeName(event.target.value);
+    }
+
     const handleSubmit = (event) => {
-        ServerApi.updateServerById(props.api_key, {
-            id: server.id,
+        ServerApi.updateServer(props.api_key, {
+            id: props.id,
             name: server_name,
+            codeName: server_codeName,
             game: server_game,
             iconURL: server_icon,
             information: server_information
-        })
-        .then((r) => {
+        }).then((r) => {
             if(r === null) {
                 props.throwForbidden();
             }
             else {
                 setServer(r);
-                setServerName(r.name);
-                setServerGame(r.game);
-                setServerIcon(r.iconURL);
-                setServerInformation(r.information);
+                setServerName(r.name || "");
+                setServerCodeName(r.codeName || "");
+                setServerGame(r.game || "");
+                setServerIcon(r.iconURL || "");
+                setServerInformation(r.information || "");
             }
         });
     }
@@ -123,14 +143,34 @@ function SingleServerView(props) {
     }
 
     const handleSubmitDelete = () => {
-        ServerApi.deleteServerById(props.api_key, server.id)
+        ServerApi.deleteServerById(props.api_key, props.id)
         .then((r) => {
             if(r === false) {
                 setDeleteModalShow(false);
                 props.throwForbidden();
             } else {
-                setDeleteModalShow(false);
                 props.handleBack();
+            }
+        });
+    }
+
+    const handleNewProduct = () => {
+        setNewProductModalShow(true);
+    }
+
+    const handleCancelNewProduct = () => {
+        setNewProductModalShow(false);
+    }
+
+    const handleSubmitNewProduct = (rt) => {
+        setNewProductModalShow(false);
+        ServerApi.createProduct(props.api_key, rt)
+        .then((r) => {
+            if(r === null) {
+                props.throwForbidden();
+            }
+            else {
+                setProducts([...products, r]);
             }
         });
     }
@@ -140,8 +180,13 @@ function SingleServerView(props) {
         <DeleteConfirmationModal 
             show={delete_modal_show}
             handleClose={handleCancelDelete}
-            text="Do you really want to delete thi server record? It will result in REMOVAL of ALL products and payment records tied to it. THIS CAN NOT BE UNDONE!"
+            text="Do you really want to delete this server record? It will result in REMOVAL of ALL products and payment records tied to it. THIS CAN NOT BE UNDONE!"
             handleSubmit={handleSubmitDelete}/>
+        <NewProductModal
+            show={newproduct_modal_show}
+            handleCancel={handleCancelNewProduct}
+            handleSubmit={handleSubmitNewProduct}
+            server_id={props.id || -1}/>
         <div className="top-menu">
             <div className="button-back"><Button variant="primary" onClick={props.handleBack}>Back</Button></div>
         </div>
@@ -161,6 +206,11 @@ function SingleServerView(props) {
                 <Form.Group as={Col} controlId="formGame">
                     <Form.Label>Server Game</Form.Label>
                     <Form.Control placeholder="Game" value={server_game} onChange={handleServerGameChange}/>
+                </Form.Group>
+
+                <Form.Group as={Col} controlId="formCodename">
+                    <Form.Label>Codename</Form.Label>
+                    <Form.Control placeholder="Codename" value={server_codeName} onChange={handleServerCodeNameChange}/>
                 </Form.Group>
 
             </Row>
@@ -183,8 +233,11 @@ function SingleServerView(props) {
             </Row>
         </Form>
 
-        <div className="text-white">
-                <h4>Products</h4>
+        <div className="text-white d-inline-block mx-1">
+            <h4>Products</h4>
+        </div>
+        <div className="text-white d-inline-block mx-1 py-2">
+            <Button variant="outline-success" size="small" onClick={handleNewProduct}><FontAwesomeIcon icon={faPlusSquare}/></Button>
         </div>
 
         <Table variant="dark" striped bordered hover responsive="sm">
