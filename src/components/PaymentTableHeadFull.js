@@ -1,5 +1,5 @@
 
-function PaymentTableHead() {
+function PaymentTableHeadFull() {
     return (
         <thead>
                 <tr>
@@ -12,7 +12,8 @@ function PaymentTableHead() {
                     <th scope="col">User</th>
                     <th scope="col">Server</th>
                     <th scope="col">Product</th>
-
+                    <th scope="col">Main Info</th>
+                    <th scope="col">Additional Info</th>
                     <th scope="col">Status</th>
                     <th scope="col">Activated</th>
                 </tr>
@@ -20,4 +21,4 @@ function PaymentTableHead() {
     )
 }
 
-export default PaymentTableHead;
+export default PaymentTableHeadFull;

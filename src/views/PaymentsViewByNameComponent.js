@@ -6,6 +6,7 @@ import UserSearchComponent from '../components/UserSearchComponent';
 import PaymentTableHead from '../components/PaymentTableHead';
 
 import ServerApi from '../api/ServerApi';
+import ReactTooltip from 'react-tooltip';
 
 function PaymentsViewByNameComponent(props) {
 
@@ -74,6 +75,7 @@ function PaymentsViewByNameComponent(props) {
             <Button variant="primary" onClick={props.handleBack}>Back</Button>
           </div>
         </div>
+        <ReactTooltip id='pinfo' />
         </>
     );
 }

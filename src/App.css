@@ -79,6 +79,10 @@
   justify-content: center;
 }
 
+.tip-div {
+  border: #282c34;
+}
+
 html, body {
   background-color: #282c34;
   min-height: 100%;

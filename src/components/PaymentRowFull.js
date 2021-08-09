@@ -2,14 +2,13 @@ import Button from 'react-bootstrap/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons'
 
-function PaymentRow(props) {
+function PaymentRowFull(props) {
 
     const onIdClick = () => {
         props.onIdClick(props.id);
     }
-
     return (
-        <tr data-tip={`<div> ${(props.main_info || "")}</div><div>${(props.other_info || "")}"</div>`} data-for='pinfo'>
+        <tr>
             <th scope="row"><Button variant="secondary" onClick={onIdClick} disabled={(props.onIdClick === undefined)}>{props.id}</Button></th>
             <td>{props.payment_id || "-"}</td>
             <td>{new Intl.DateTimeFormat("en-GB", {
@@ -23,6 +22,8 @@ function PaymentRow(props) {
             <td>{props.user}</td>
             <td>{props.server || "?"}</td>
             <td>{props.product || "?"}</td>
+            <td>{props.main_info || "-"}</td>
+            <td>{props.other_info || "-"}</td>
             <td>{props.status || "-"}</td>
             <td>{props.activated ? <FontAwesomeIcon icon={faCheck} /> : <FontAwesomeIcon icon={faTimes} />}</td>
         </tr>
@@ -30,4 +31,4 @@ function PaymentRow(props) {
     )
 }
 
-export default PaymentRow;
+export default PaymentRowFull;

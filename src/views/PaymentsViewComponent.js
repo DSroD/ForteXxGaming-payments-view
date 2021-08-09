@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
+import ReactTooltip from 'react-tooltip';
 import PaymentRow from '../components/PaymentRow';
 import PaymentPaginator from '../components/PaymentPaginator';
 import ItemsPerPageDropdown from '../components/ItemsPerPageDropdown';
@@ -98,6 +99,7 @@ function PaymentsViewComponent(props) {
             <PaymentPaginator firstPage={setFirstPage} setPage={setPage} current_page={pg} disable_next={getLength(payments) < numPage}/>
             <ItemsPerPageDropdown current={numPage} onClick={setNumOnPage}/>
         </div>
+        <ReactTooltip id="pinfo" multiline={true} html={true}/>
         </>
     );
 }

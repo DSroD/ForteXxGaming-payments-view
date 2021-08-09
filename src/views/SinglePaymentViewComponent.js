@@ -6,9 +6,9 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-import PaymentRow from "../components/PaymentRow";
+import PaymentRowFull from "../components/PaymentRowFull";
 import UserSearchComponent from '../components/UserSearchComponent';
-import PaymentTableHead from "../components/PaymentTableHead";
+import PaymentTableHeadFull from "../components/PaymentTableHeadFull";
 
 import ServerApi from "../api/ServerApi";
 
@@ -41,7 +41,7 @@ function SinglePaymentViewComponent(props) {
         if (payment === null || payment === undefined) {
             return null;
         }
-        return(<PaymentRow 
+        return(<PaymentRowFull
         id={payment.id} 
         payment_id={payment.paymentId} 
         payment_date={payment.paymentDate}
@@ -72,6 +72,7 @@ function SinglePaymentViewComponent(props) {
         setStatus(event.target.value);
     }
 
+    //TODO: implement Payment update in API
     return (
         <>
         <div className="top-menu">
@@ -79,7 +80,7 @@ function SinglePaymentViewComponent(props) {
             <UserSearchComponent searchUser={props.handleSearchUserClick}/>
         </div>
         <Table variant="dark" striped bordered hover responsive="sm">
-            <PaymentTableHead/>
+            <PaymentTableHeadFull/>
             <tbody>
                 {getPaymentRow()}
             </tbody>
